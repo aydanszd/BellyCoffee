@@ -73,35 +73,29 @@ export default function BellyNavbar() {
                                 </div>
                             )}
                         </div>
-
                         <a
-                            href="/about"
+                            href="/AboutUs"
                             className="text-black hover:text-[#B3936D] transition-colors font-medium"
                         >
                             ABOUT US
                         </a>
-
                         <a
-                            href="/contact"
+                            href="/ContactUs"
                             className="text-black hover:text-[#B3936D] transition-colors font-medium"
                         >
                             CONTACT US
                         </a>
                     </div>
-
                     <div className="flex items-center space-x-7">
                         <button className="text-black hover:text-gray-500 transition-colors">
                             <Search className="w-5 h-5" />
                         </button>
-
                         <button className="text-black hover:text-gray-500 transition-colors relative">
                             <ShoppingCart className="w-5 h-5" />
                         </button>
-
                         <button className="text-black hover:text-[#B3936D] transition-colors md:hidden">
                             <Menu className="w-5 h-5" />
                         </button>
-
                         <button className="hidden text-black md:block p-2 hover:bg-gray-100 rounded transition-colors">
                             <div className="grid grid-cols-3 gap-1">
                                 {[...Array(9)].map((_, i) => (
@@ -113,10 +107,10 @@ export default function BellyNavbar() {
                 </div>
             </div>
 
-            <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
+            <div className="fixed right-0 top-1/2 -translate-y-[200px] z-50">
                 <a
                     href="#"
-                    className="bg-orange-500 text-center text-white w-20 h-20 shadow-lg hover:bg-orange-600 transition-colors flex items-center justify-center text-sm font-bold"
+                    className="bg-[#f68e13] text-center text-white w-16 h-16 shadow-lg hover:bg-orange-600 transition-colors flex items-center justify-center text-sm font-bold"
                 >
                     MORE DEMOS
                 </a>

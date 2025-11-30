@@ -1,10 +1,9 @@
 import React from 'react'
+import CoffeeSlider from '../../sections/HerroBanner/index'
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>HomePagep</h1>
-    </div>
+   <CoffeeSlider />
   )
 }
 
