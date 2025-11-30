@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slides = [
@@ -65,7 +65,7 @@ export default function CoffeeSlider() {
                         {slides[currentSlide].description}
                     </p>
 
-                    <button className="mt-8 px-8 py-4 rounded-[6px] bg-[#B3936D] hover:bg-amber-700 text-white font-medium uppercase tracking-wider shadow-lg transition">
+                    <button className="mt-8 px-8 py-4 rounded-md bg-[#B3936D] hover:bg-amber-700 text-white font-medium uppercase tracking-wider shadow-lg transition">
                         Discover Now
                     </button>
                 </div>

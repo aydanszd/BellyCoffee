@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Search, ShoppingCart, Menu, ChevronDown } from 'lucide-react';
 
 export default function BellyNavbar() {
