@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Facebook, Twitter, Instagram, Linkedin, Rss, Mail, Phone, MapPin, ShoppingCart, Heart, User, Package, Truck, RotateCcw, Bell, Clock, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
+import { Facebook, Twitter, Instagram, Linkedin, Rss,  Phone, Truck, RotateCcw, Bell, Clock} from 'lucide-react';
 
 const Footer = () => {
     const [email, setEmail] = useState('');
@@ -60,7 +60,7 @@ const Footer = () => {
                         <h3 className="text-xl font-serif text-white mb-8">Contact Us</h3>
                         <div className="space-y-5">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-[#c9a063] rounded-full flex items-center justify-center flex-shrink-0">
+                                <div className="w-12 h-12 bg-[#c9a063] rounded-full flex items-center justify-center shrink-0">
                                     <Phone className="w-5 h-5 text-white" />
                                 </div>
                                 <span className="text-white text-lg font-medium">+ (012) 800 456 789</span>
@@ -143,7 +143,7 @@ const Footer = () => {
                             { icon: Clock, title: 'Online Support', desc: 'Support online 24 hours a day' },
                         ].map((feature, index) => (
                             <div key={index} className="flex items-start gap-4">
-                                <div className="w-16 h-16 border-2 border-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
+                                <div className="w-16 h-16 border-2 border-gray-700 rounded-full flex items-center justify-center shrink-0">
                                     <feature.icon className="w-7 h-7 text-gray-600" />
                                 </div>
                                 <div className="pt-2">

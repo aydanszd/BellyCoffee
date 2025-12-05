@@ -1,9 +1,9 @@
-const AboutPage = () => {
+import DigitalAgency from '../../sections/AboutUsPage/DigitalAgency/index'
+
+const AboutUs = () => {
   return (
-    <div>
-      <h1>About page</h1>
-    </div>
+    <DigitalAgency/>
   )
 }
 
-export default AboutPage
+export default AboutUs

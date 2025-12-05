@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import  { useState } from 'react';
 
 const TestimonialSection = () => {
     const [activeIndex, setActiveIndex] = useState(0);
