@@ -4,6 +4,7 @@ import HomePage from './features/pages/Home'
 import ContactUs from './features/pages/ContactUs'
 import BlogPage from './features/pages/Blog'
 import AboutUs from './features/pages/AboutUs'
+import ShopPage from './features/pages/Shop'
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
             {
                 path: 'AboutUs',
                 element: <AboutUs />,
+            },
+             {
+                path: 'Shop',
+                element: <ShopPage />,
             },
         ],
     },
