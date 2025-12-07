@@ -48,7 +48,7 @@ const WhyChooseUs: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-[#FFF9E6] via-[#FFEFD9] to-[#FFF7EB]">
+        <div className="min-h-screen bg-linear-to-r from-[#FFF9E6] via-[#FFEFD9] to-[#FFF7EB]">
             <div className="container mx-auto px-4 py-16">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6">

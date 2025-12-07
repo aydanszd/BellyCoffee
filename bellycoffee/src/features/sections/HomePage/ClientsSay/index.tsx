@@ -27,14 +27,6 @@ const TestimonialSection = () => {
         }
     ];
 
-    const nextTestimonial = () => {
-        setActiveIndex((prev) => (prev + 1) % testimonials.length);
-    };
-
-    const prevTestimonial = () => {
-        setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-    };
-
     return (
         <div className="bg-gray-900 text-white py-20 px-4">
             <div className="max-w-7xl mx-auto">

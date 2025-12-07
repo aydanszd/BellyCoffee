@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, ShoppingCart, Menu, Grid, List, ChevronDown, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+import { Grid, List, ChevronDown, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ShopPage = () => {
     const [viewType, setViewType] = useState('grid');
@@ -130,7 +130,7 @@ const ShopPage = () => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentProducts = allProducts.slice(indexOfFirstItem, indexOfLastItem);
 
-    const handlePageChange = (page) => {
+    const handlePageChange = (page:any) => {
         setCurrentPage(page);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -367,7 +367,7 @@ const ShopPage = () => {
                                     <button
                                         key={pageNum}
                                         onClick={() => handlePageChange(pageNum)}
-                                        className={`min-w-[40px] h-[40px] border rounded ${currentPage === pageNum
+                                        className={`min-w-10 h-10 border rounded ${currentPage === pageNum
                                             ? 'bg-[#B3936D] text-white border-[#B3936D]'
                                             : 'border-[#B3936D] hover:border-[#B3936D] hover:text-[#B3936D]'
                                         }`}

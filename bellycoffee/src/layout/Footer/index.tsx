@@ -11,10 +11,6 @@ const Footer = () => {
         }
     };
 
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
     const instagramPhotos = [
         'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=200&h=200&fit=crop',
         'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=200&h=200&fit=crop',

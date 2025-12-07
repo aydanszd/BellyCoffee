@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { Home, Phone, Mail } from 'lucide-react';
 
 export default function ContactPage() {
@@ -9,18 +9,20 @@ export default function ContactPage() {
         message: ''
     });
 
-    const handleChange = (e) => {
+    const handleChange = (e: { target: { name: any; value: any; }; }) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
 
-    const handleSubmit = () => {
+    function handleSubmit(e: { preventDefault: () => void; }) {
+        e.preventDefault();
         console.log('Form submitted:', formData);
         alert('Message sent successfully!');
         setFormData({ name: '', email: '', subject: '', message: '' });
-    };
+    }
+
     return (
         <div className="min-h-screen mt-[-130px]">
             <div className="max-w-7xl mx-auto py-16 px-4">
@@ -71,7 +73,7 @@ export default function ContactPage() {
                     </div>
                     <div className="md:col-span-5">
                         <h2 className="text-5xl font-[Rubik] text-gray-800 mb-12">Tell Us Your Message</h2>
-                        <div className="space-y-8">
+                        <form onSubmit={handleSubmit} className="space-y-8">
                             <div>
                                 <label className="block text-gray-500 text-sm mb-3">
                                     Your Name <span className="text-red-500">*</span>
@@ -114,16 +116,16 @@ export default function ContactPage() {
                                     name="message"
                                     value={formData.message}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-15 border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none"
+                                    className="w-full px-4 py-6 border border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none"
                                 ></textarea>
                             </div>
                             <button
-                                onClick={handleSubmit}
+                                type="submit"
                                 className="px-10 py-3 rounded-lg bg-gray-900 text-white text-sm font-medium tracking-wider hover:bg-gray-800 transition-colors"
                             >
                                 SEND
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

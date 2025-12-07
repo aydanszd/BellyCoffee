@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_colors",
+  "info": {
+    "singularName": "product-color",
+    "pluralName": "product-colors",
+    "displayName": "ProductColor"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Black": {
+      "type": "string"
+    },
+    "Blue": {
+      "type": "string"
+    },
+    "Red": {
+      "type": "string"
+    },
+    "White": {
+      "type": "string"
+    }
+  }
+}
