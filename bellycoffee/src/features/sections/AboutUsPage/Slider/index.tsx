@@ -53,7 +53,7 @@ const TestimonialSlider = () => {
     const currentTestimonial = testimonials[activeIndex];
 
     return (
-        <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-8 mt-[-520px]">
+        <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-8 -mt-130">
             <div className="max-w-7xl w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
                     <div className="flex justify-center lg:justify-end">
@@ -82,7 +82,7 @@ const TestimonialSlider = () => {
                             className={`transition-all duration-500 ${isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
                                 }`}
                         >
-                            <p className="text-gray-600 text-lg leading-relaxed mb-8 mt-[-30px]">
+                            <p className="text-gray-600 text-lg leading-relaxed mb-8 -mt-7.5">
                                 {currentTestimonial.text}
                             </p>
 

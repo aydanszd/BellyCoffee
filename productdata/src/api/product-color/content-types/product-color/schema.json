@@ -9,19 +9,23 @@
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "content-manager": {
+      "visible": true
+    },
+    "content-type-builder": {
+      "visible": true
+    }
+  },
   "attributes": {
-    "Black": {
+    "name": {
       "type": "string"
     },
-    "Blue": {
-      "type": "string"
-    },
-    "Red": {
-      "type": "string"
-    },
-    "White": {
-      "type": "string"
+    "products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "mappedBy": "product_colors"
     }
   }
 }

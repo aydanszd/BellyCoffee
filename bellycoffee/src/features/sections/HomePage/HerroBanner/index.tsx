@@ -1,32 +1,94 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-const slides = [
-    {
-        id: 1,
-        title: "Original Coffee",
-        subtitle: "Best Choice For Restaurant, Cafe and More...",
-        description: "Discover the rich and bold flavors 1 of our signature blend coffee. Perfect for any occasion. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing ",
-        image: "https://cafedarte.gr/wp-content/uploads/2017/09/coffee_slide-1-1.jpg"
+import { selectCurrentLanguage } from '../../../../Redux/Slices/languageSlice';
+const sliderTranslations = {
+    en: {
+        slides: [
+            {
+                id: 1,
+                title: "Original Coffee",
+                subtitle: "Best Choice For Restaurant, Cafe and More...",
+                description: "Discover the rich and bold flavors of our signature blend coffee. Perfect for any occasion. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing",
+                image: "https://cafedarte.gr/wp-content/uploads/2017/09/coffee_slide-1-1.jpg"
+            },
+            {
+                id: 2,
+                title: "Premium Blend",
+                subtitle: "Experience the Finest Coffee Beans",
+                description: "Discover the rich and bold flavors of our signature blend coffee. Perfect for any occasion. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing",
+                image: "https://acoffee-store-demo.myshopify.com/cdn/shop/files/banner-v1-2.jpg?v=1614317123"
+            },
+            {
+                id: 3,
+                title: "Artisan Roasted",
+                subtitle: "Crafted with Passion and Expertise",
+                description: "Discover the rich and bold flavors of our signature blend coffee. Perfect for any occasion. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing",
+                image: "https://krzepi.pl/wp-content/uploads/2022/04/12-oz-copy.webp"
+            }
+        ],
+        discoverBtn: "Discover Now"
     },
-    {
-        id: 2,
-        title: "Premium Blend",
-        subtitle: "Experience the Finest Coffee Beans",
-        description: "Discover2 the rich and bold flavors 1 of our signature blend coffee. Perfect for any occasion. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing ",
-        image: "https://acoffee-store-demo.myshopify.com/cdn/shop/files/banner-v1-2.jpg?v=1614317123"
+    ru: {
+        slides: [
+            {
+                id: 1,
+                title: "Оригинальный кофе",
+                subtitle: "Лучший выбор для ресторана, кафе и не только...",
+                description: "Откройте для себя богатый и насыщенный вкус нашего фирменного купажа кофе. Идеально подходит для любого случая. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing",
+                image: "https://cafedarte.gr/wp-content/uploads/2017/09/coffee_slide-1-1.jpg"
+            },
+            {
+                id: 2,
+                title: "Премиум купаж",
+                subtitle: "Испытайте лучшие кофейные зерна",
+                description: "Откройте для себя богатый и насыщенный вкус нашего фирменного купажа кофе. Идеально подходит для любого случая. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing",
+                image: "https://acoffee-store-demo.myshopify.com/cdn/shop/files/banner-v1-2.jpg?v=1614317123"
+            },
+            {
+                id: 3,
+                title: "Ремесленная обжарка",
+                subtitle: "Создано со страстью и мастерством",
+                description: "Откройте для себя богатый и насыщенный вкус нашего фирменного купажа кофе. Идеально подходит для любого случая. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing",
+                image: "https://krzepi.pl/wp-content/uploads/2022/04/12-oz-copy.webp"
+            }
+        ],
+        discoverBtn: "Узнать больше"
     },
-    {
-        id: 3,
-        title: "Artisan Roasted",
-        subtitle: "Crafted with Passion and Expertise",
-        description: "3Discover the rich and bold flavors 1 of our signature blend coffee. Perfect for any occasion. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing ",
-        image: "https://krzepi.pl/wp-content/uploads/2022/04/12-oz-copy.webp"
+    az: {
+        slides: [
+            {
+                id: 1,
+                title: "Orijinal Qəhvə",
+                subtitle: "Restoran, kafe və daha çoxu üçün ən yaxşı seçim...",
+                description: "Bizim xüsusi qarışıq qəhvəmizin zəngin və cəsarətli dadını kəşf edin. Hər hansı bir halda mükəmməldir. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing",
+                image: "https://cafedarte.gr/wp-content/uploads/2017/09/coffee_slide-1-1.jpg"
+            },
+            {
+                id: 2,
+                title: "Premium Qarışıq",
+                subtitle: "Ən yaxşı qəhvə dənələrini sınayın",
+                description: "Bizim xüsusi qarışıq qəhvəmizin zəngin və cəsarətli dadını kəşf edin. Hər hansı bir halda mükəmməldir. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing",
+                image: "https://acoffee-store-demo.myshopify.com/cdn/shop/files/banner-v1-2.jpg?v=1614317123"
+            },
+            {
+                id: 3,
+                title: "Sənətkar Qavrulmuş",
+                subtitle: "Ehtirasla və təcrübə ilə hazırlanmışdır",
+                description: "Bizim xüsusi qarışıq qəhvəmizin zəngin və cəsarətli dadını kəşf edin. Hər hansı bir halda mükəmməldir. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing",
+                image: "https://krzepi.pl/wp-content/uploads/2022/04/12-oz-copy.webp"
+            }
+        ],
+        discoverBtn: "İndi kəşf et"
     }
-];
+};
 
 export default function CoffeeSlider() {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const currentLang = useSelector(selectCurrentLanguage);
+    
+    const t = sliderTranslations[currentLang];
+    const slides = t.slides;
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -34,7 +96,7 @@ export default function CoffeeSlider() {
         }, 5000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [slides.length]);
 
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -52,7 +114,7 @@ export default function CoffeeSlider() {
             }}
         >
             <div className="relative z-10 flex items-center h-full px-6 lg:px-16">
-                <div className="max-w-2xl space-y-6 text-left ml-[60px]">
+                <div className="max-w-2xl space-y-6 text-left ml-15">
                     <p className="uppercase tracking-wider font-medium text-black text-2xl">
                         {slides[currentSlide].subtitle}
                     </p>
@@ -66,36 +128,38 @@ export default function CoffeeSlider() {
                     </p>
 
                     <button className="mt-8 px-8 py-4 rounded-md bg-[#B3936D] hover:bg-amber-700 text-white font-medium uppercase tracking-wider shadow-lg transition">
-                        Discover Now
+                        {t.discoverBtn}
                     </button>
                 </div>
             </div>
+            
             <button
                 onClick={prevSlide}
-                className="absolute left-6  translate-y-[30px]  top-1/2  p-4 bg-white/80 rounded-full shadow hover:bg-white transition z-20"
+                className="absolute left-6 translate-y-7.5 top-1/2 p-4 bg-white/80 rounded-full shadow hover:bg-white transition z-20"
             >
                 <ChevronLeft className="text-gray-800" />
             </button>
 
             <button
                 onClick={nextSlide}
-                className="absolute translate-y-[30px] right-6 top-1/2  p-4 bg-white/80 rounded-full shadow hover:bg-white transition z-20"
+                className="absolute translate-y-7.5 right-6 top-1/2 p-4 bg-white/80 rounded-full shadow hover:bg-white transition z-20"
             >
                 <ChevronRight className="text-gray-800" />
             </button>
+            
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
                 {slides.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => setCurrentSlide(index)}
-                        className={`transition-all duration-300 rounded-full ${index === currentSlide
-                            ? "w-10 h-3 bg-amber-600"
-                            : "w-3 h-3 bg-white/60"
-                            }`}
+                        className={`transition-all duration-300 rounded-full ${
+                            index === currentSlide
+                                ? "w-10 h-3 bg-amber-600"
+                                : "w-3 h-3 bg-white/60"
+                        }`}
                     />
                 ))}
             </div>
-
         </div>
     );
 }

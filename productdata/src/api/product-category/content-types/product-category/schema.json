@@ -11,29 +11,14 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "CafeLatte": {
+    "name": {
       "type": "string"
     },
-    "Cappuccino": {
-      "type": "string"
-    },
-    "FlatWhite": {
-      "type": "string"
-    },
-    "LongMacchiato": {
-      "type": "string"
-    },
-    "Mocha": {
-      "type": "string"
-    },
-    "PiccoloLatte": {
-      "type": "string"
-    },
-    "ShortMacchiato": {
-      "type": "string"
-    },
-    "Uncategoriezd": {
-      "type": "string"
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "product_category"
     }
   }
 }
