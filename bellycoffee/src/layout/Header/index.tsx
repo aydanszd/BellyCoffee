@@ -22,6 +22,7 @@ const translations = {
         aboutUs: 'ABOUT US',
         contactUs: 'CONTACT US',
         logout: 'Logout',
+        login: 'Login',
         myAccount: 'My Account',
         wishlist: 'Wishlist',
         checkout: 'Checkout',
@@ -37,6 +38,7 @@ const translations = {
         aboutUs: 'О НАС',
         contactUs: 'КОНТАКТЫ',
         logout: 'Выйти',
+        login: 'Войти',
         myAccount: 'Мой аккаунт',
         wishlist: 'Избранное',
         checkout: 'Оформить',
@@ -52,6 +54,7 @@ const translations = {
         aboutUs: 'HAQQIMIZDA',
         contactUs: 'ƏLAQƏ',
         logout: 'Çıxış',
+        login: 'Daxil ol',
         myAccount: 'Hesabım',
         wishlist: 'İstək siyahısı',
         checkout: 'Ödəniş',
@@ -71,6 +74,7 @@ export default function BellyNavbar() {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState<Product[]>([]);
     const [isSearching, setIsSearching] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('user'));
     
     const cartItemsCount = useSelector(selectCartItemsCount);
     const currentLang = useSelector(selectCurrentLanguage);
@@ -83,7 +87,7 @@ export default function BellyNavbar() {
         localStorage.removeItem('user');
         localStorage.removeItem('cart');
         dispatch(setLoginStatus(false));
-        navigate('/');
+        setIsLoggedIn(false);
     };
 
     const handleSearch = async (query: string) => {
@@ -237,13 +241,22 @@ export default function BellyNavbar() {
                                 </div>
                             </button>
                             <div className="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                <button 
-                                    onClick={handleLogout} 
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 items-center gap-2"
-                                >
-                                    <LogOut className="w-4 h-4" />
-                                    {t.logout}
-                                </button>
+                                {isLoggedIn ? (
+                                    <button 
+                                        onClick={handleLogout} 
+                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 items-center gap-2"
+                                    >
+                                        <LogOut className="w-4 h-4" />
+                                        {t.logout}
+                                    </button>
+                                ) : (
+                                    <button 
+                                        onClick={() => navigate('/login')} 
+                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    >
+                                        {t.login}
+                                    </button>
+                                )}
                                 <button 
                                     onClick={() => navigate('/login')} 
                                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -257,7 +270,7 @@ export default function BellyNavbar() {
                                     {t.wishlist}
                                 </button>
                                 <button 
-                                    onClick={() => navigate('/checkout')} 
+                                    onClick={() => navigate('/orders')} 
                                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 >
                                     {t.checkout}
@@ -322,16 +335,28 @@ export default function BellyNavbar() {
                         </button>
 
                         <div className="border-t pt-3 space-y-2">
-                            <button
-                                onClick={() => {
-                                    handleLogout();
-                                    setIsMobileMenuOpen(false);
-                                }}
-                                className="block w-full text-left text-gray-600 hover:text-[#B3936D] py-1 items-center gap-2"
-                            >
-                                <LogOut className="w-4 h-4" />
-                                {t.logout}
-                            </button>
+                            {isLoggedIn ? (
+                                <button
+                                    onClick={() => {
+                                        handleLogout();
+                                        setIsMobileMenuOpen(false);
+                                    }}
+                                    className="block w-full text-left text-gray-600 hover:text-[#B3936D] py-1 items-center gap-2"
+                                >
+                                    <LogOut className="w-4 h-4" />
+                                    {t.logout}
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => {
+                                        navigate('/login');
+                                        setIsMobileMenuOpen(false);
+                                    }}
+                                    className="block w-full text-left text-gray-600 hover:text-[#B3936D] py-1"
+                                >
+                                    {t.login}
+                                </button>
+                            )}
                             <button
                                 onClick={() => {
                                     navigate('/login');

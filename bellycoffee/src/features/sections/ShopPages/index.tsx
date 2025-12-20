@@ -30,107 +30,8 @@ import {
 } from '../../../Redux/Slices/productSlice';
 import { addToCart, selectIsLoggedIn } from '../../../Redux/Slices/cartSlice';
 import { selectCurrentLanguage } from '../../../Redux/Slices/languageSlice';
+import { translations } from '../../../translations/translations'; 
 import type { AppDispatch } from '../../../Redux/Store/store';
-
-// Translations
-const shopTranslations = {
-    en: {
-        title: "Shop",
-        home: "Home",
-        loading: "Loading...",
-        productCategories: "Product categories",
-        filterByPrice: "Filter by price",
-        price: "Price",
-        productsFound: "products found",
-        filterByColor: "Filter by color",
-        productTags: "Product tags",
-        activeFilters: "Active Filters:",
-        categories: "Categories",
-        colors: "Colors",
-        tags: "Tags",
-        topRatedProducts: "Top rated products",
-        showing: "Showing",
-        of: "of",
-        products: "products",
-        defaultSorting: "Default sorting",
-        sortPriceLow: "Sort by price: low to high",
-        sortPriceHigh: "Sort by price: high to low",
-        sortLatest: "Sort by latest",
-        outOfStock: "OUT OF STOCK",
-        addToCart: "ADD TO CART",
-        loginToBuy: "LOGIN TO BUY",
-        noProducts: "No products found matching these filters",
-        clearFilters: "Clear Filters",
-        addedToCart: "added to cart!",
-        goToCart: "Go to cart →",
-        pleaseLogin: "Please login to add items to cart",
-        loginToAddToCart: "Login to add to cart"
-    },
-    ru: {
-        title: "Магазин",
-        home: "Главная",
-        loading: "Загрузка...",
-        productCategories: "Категории товаров",
-        filterByPrice: "Фильтр по цене",
-        price: "Цена",
-        productsFound: "товаров найдено",
-        filterByColor: "Фильтр по цвету",
-        productTags: "Теги товаров",
-        activeFilters: "Активные фильтры:",
-        categories: "Категории",
-        colors: "Цвета",
-        tags: "Теги",
-        topRatedProducts: "Товары с высоким рейтингом",
-        showing: "Показано",
-        of: "из",
-        products: "товаров",
-        defaultSorting: "Сортировка по умолчанию",
-        sortPriceLow: "Сортировать по цене: от низкой к высокой",
-        sortPriceHigh: "Сортировать по цене: от высокой к низкой",
-        sortLatest: "Сортировать по новизне",
-        outOfStock: "НЕТ В НАЛИЧИИ",
-        addToCart: "В КОРЗИНУ",
-        loginToBuy: "ВОЙТИ ДЛЯ ПОКУПКИ",
-        noProducts: "Не найдено товаров, соответствующих этим фильтрам",
-        clearFilters: "Очистить фильтры",
-        addedToCart: "добавлен в корзину!",
-        goToCart: "Перейти в корзину →",
-        pleaseLogin: "Пожалуйста, войдите, чтобы добавить товары в корзину",
-        loginToAddToCart: "Войдите, чтобы добавить в корзину"
-    },
-    az: {
-        title: "Mağaza",
-        home: "Ana səhifə",
-        loading: "Yüklənir...",
-        productCategories: "Məhsul kateqoriyaları",
-        filterByPrice: "Qiymətə görə filtr",
-        price: "Qiymət",
-        productsFound: "məhsul tapıldı",
-        filterByColor: "Rəngə görə filtr",
-        productTags: "Məhsul teqləri",
-        activeFilters: "Aktiv filtrlər:",
-        categories: "Kateqoriyalar",
-        colors: "Rənglər",
-        tags: "Teqlər",
-        topRatedProducts: "Ən yüksək reytinqli məhsullar",
-        showing: "Göstərilir",
-        of: "/",
-        products: "məhsul",
-        defaultSorting: "Standart çeşidləmə",
-        sortPriceLow: "Qiymətə görə: aşağıdan yuxarıya",
-        sortPriceHigh: "Qiymətə görə: yuxarıdan aşağıya",
-        sortLatest: "Ən yenilərə görə",
-        outOfStock: "STOKDA YOX",
-        addToCart: "SƏBƏTƏ ƏLAVƏ ET",
-        loginToBuy: "ALMAQ ÜÇÜN GİRİŞ ET",
-        noProducts: "Bu filtrlərə uyğun məhsul tapılmadı",
-        clearFilters: "Filterləri Təmizlə",
-        addedToCart: "səbətə əlavə edildi!",
-        goToCart: "Səbətə get →",
-        pleaseLogin: "Səbətə əlavə etmək üçün giriş edin",
-        loginToAddToCart: "Səbətə əlavə etmək üçün giriş"
-    }
-};
 
 const ShopPage = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -139,7 +40,7 @@ const ShopPage = () => {
     const isLoggedIn = useSelector(selectIsLoggedIn);
     const currentLang = useSelector(selectCurrentLanguage);
     
-    const t = shopTranslations[currentLang];
+    const t = translations[currentLang];
     
     const allProducts = useSelector(selectAllProducts);
     const categories = useSelector(selectCategories);
@@ -194,7 +95,7 @@ const ShopPage = () => {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="text-xl">{t.loading}</div>
+                <div className="text-xl">{t.loadingShop}</div>
             </div>
         );
     }
@@ -266,8 +167,8 @@ const ShopPage = () => {
 
             <div className="bg-white py-10">
                 <div className="max-w-7xl mx-auto px-4 text-center">
-                    <h1 className="text-5xl font-serif mb-4">{t.title}</h1>
-                    <p className="text-gray-600">{t.home} / <span className='text-[#B3936B]'>{t.title}</span></p>
+                    <h1 className="text-5xl font-serif mb-4">{t.shopTitle}</h1>
+                    <p className="text-gray-600">{t.homeLink} / <span className='text-[#B3936B]'>{t.shopTitle}</span></p>
                 </div>
             </div>
 
@@ -487,7 +388,7 @@ const ShopPage = () => {
 
                         {filteredProducts.length === 0 && (
                             <div className="text-center py-12">
-                                <p className="text-gray-600 text-lg">{t.noProducts}</p>
+                                <p className="text-gray-600 text-lg">{t.noProductsFilters}</p>
                                 <button onClick={() => dispatch(clearFilters())} className="mt-4 px-6 py-2 bg-[#B3936D] text-white rounded hover:bg-[#9a7d5a]">
                                     {t.clearFilters}
                                 </button>

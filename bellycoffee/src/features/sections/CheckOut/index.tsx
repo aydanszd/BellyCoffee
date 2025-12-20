@@ -3,8 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Truck, MapPin, User, Mail, Phone, Package } from 'lucide-react';
 import { clearCart } from '../../../Redux/Slices/cartSlice';
-
-// Type təyinləri
 interface CartItem {
     id: string | number;
     name: string;

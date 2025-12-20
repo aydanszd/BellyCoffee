@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface CartItem {
     id: string;
@@ -24,7 +24,6 @@ const isUserLoggedIn = (): boolean => {
 
 const loadCartFromStorage = (): CartItem[] => {
     try {
-        if (!isUserLoggedIn()) return [];
         const savedCart = localStorage.getItem('cart');
         return savedCart ? JSON.parse(savedCart) : [];
     } catch (error) {
@@ -35,7 +34,6 @@ const loadCartFromStorage = (): CartItem[] => {
 
 const saveCartToStorage = (items: CartItem[]) => {
     try {
-        if (!isUserLoggedIn()) return;
         localStorage.setItem('cart', JSON.stringify(items));
     } catch (error) {
         console.error('Error saving cart to localStorage:', error);
@@ -51,7 +49,7 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addToCart: (state, action) => {
+        addToCart: (state, action: PayloadAction<CartItem>) => {
             const existingItem = state.items.find(item => item.id === action.payload.id);
             if (existingItem) {
                 existingItem.quantity += (action.payload.quantity || 1);
@@ -64,12 +62,12 @@ const cartSlice = createSlice({
             saveCartToStorage(state.items);
         },
         
-        removeFromCart: (state, action) => {
+        removeFromCart: (state, action: PayloadAction<string>) => {
             state.items = state.items.filter(item => item.id !== action.payload);
             saveCartToStorage(state.items);
         },
         
-        updateQuantity: (state, action) => {
+        updateQuantity: (state, action: PayloadAction<{ id: string; quantity: number }>) => {
             const item = state.items.find(item => item.id === action.payload.id);
             if (item) {
                 item.quantity = action.payload.quantity;
@@ -82,18 +80,18 @@ const cartSlice = createSlice({
         
         clearCart: (state) => {
             state.items = [];
-            saveCartToStorage(state.items);
+            localStorage.removeItem('cart');
         },
         
-        incrementQuantity: (state, action) => {
+        incrementQuantity: (state, action: PayloadAction<string>) => {
             const item = state.items.find(item => item.id === action.payload);
             if (item) {
                 item.quantity += 1;
+                saveCartToStorage(state.items);
             }
-            saveCartToStorage(state.items);
         },
         
-        decrementQuantity: (state, action) => {
+        decrementQuantity: (state, action: PayloadAction<string>) => {
             const item = state.items.find(item => item.id === action.payload);
             if (item) {
                 if (item.quantity > 1) {
@@ -101,8 +99,8 @@ const cartSlice = createSlice({
                 } else {
                     state.items = state.items.filter(i => i.id !== action.payload);
                 }
+                saveCartToStorage(state.items);
             }
-            saveCartToStorage(state.items);
         },
         
         syncCart: (state) => {
@@ -113,13 +111,15 @@ const cartSlice = createSlice({
                 state.items = loadCartFromStorage();
             } else {
                 state.items = [];
+                localStorage.removeItem('cart');
             }
         },
         
-        setLoginStatus: (state, action) => {
+        setLoginStatus: (state, action: PayloadAction<boolean>) => {
             state.isLoggedIn = action.payload;
             if (!action.payload) {
                 state.items = [];
+                localStorage.removeItem('cart');
             }
         },
     },

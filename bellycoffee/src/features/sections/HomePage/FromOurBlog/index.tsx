@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectCurrentLanguage } from '../../../../Redux/Slices/languageSlice';
+import { translations } from '../../../../translations/translations'; 
 
 interface BlogPost {
     id: number;
@@ -10,125 +11,50 @@ interface BlogPost {
     category: string;
     excerpt: string;
 }
-const blogTranslations = {
-    en: {
-        title: "From Our Blog",
-        subtitle: "Mirum est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum.",
-        by: "By",
-        in: "in",
-        readMore: "Read More",
-        posts: [
-            {
-                id: 1,
-                image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=400&fit=crop',
-                title: 'Sample post with format link',
-                author: 'admin',
-                category: 'furniture',
-                excerpt: 'Maecenas eget congue augue. Sed mollis tempor velit, et tempor justo cursus vel. Phasellus lacinia placerat lacus, vulputate...'
-            },
-            {
-                id: 2,
-                image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600&h=400&fit=crop',
-                title: 'Post with Gallery',
-                author: 'admin',
-                category: 'business',
-                excerpt: 'Maecenas eget congue augue. Sed mollis tempor velit, et tempor justo cursus vel. Phasellus lacinia placerat lacus, vulputate...'
-            },
-            {
-                id: 3,
-                image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop',
-                title: 'Sample post with format chat',
-                author: 'admin',
-                category: 'interior',
-                excerpt: 'Maecenas eget congue augue. Sed mollis tempor velit, et tempor justo cursus vel. Phasellus lacinia placerat lacus, vulputate...'
-            }
-        ]
-    },
-    ru: {
-        title: "Из нашего блога",
-        subtitle: "Mirum est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum.",
-        by: "Автор",
-        in: "в",
-        readMore: "Читать далее",
-        posts: [
-            {
-                id: 1,
-                image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=400&fit=crop',
-                title: 'Пример поста с форматом ссылки',
-                author: 'admin',
-                category: 'мебель',
-                excerpt: 'Maecenas eget congue augue. Sed mollis tempor velit, et tempor justo cursus vel. Phasellus lacinia placerat lacus, vulputate...'
-            },
-            {
-                id: 2,
-                image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600&h=400&fit=crop',
-                title: 'Пост с галереей',
-                author: 'admin',
-                category: 'бизнес',
-                excerpt: 'Maecenas eget congue augue. Sed mollis tempor velit, et tempor justo cursus vel. Phasellus lacinia placerat lacus, vulputate...'
-            },
-            {
-                id: 3,
-                image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop',
-                title: 'Пример поста с форматом чата',
-                author: 'admin',
-                category: 'интерьер',
-                excerpt: 'Maecenas eget congue augue. Sed mollis tempor velit, et tempor justo cursus vel. Phasellus lacinia placerat lacus, vulputate...'
-            }
-        ]
-    },
-    az: {
-        title: "Blogumuzdan",
-        subtitle: "Mirum est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum.",
-        by: "Müəllif",
-        in: "kateqoriya",
-        readMore: "Ətraflı oxu",
-        posts: [
-            {
-                id: 1,
-                image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=400&fit=crop',
-                title: 'Link formatında nümunə yazı',
-                author: 'admin',
-                category: 'mebel',
-                excerpt: 'Maecenas eget congue augue. Sed mollis tempor velit, et tempor justo cursus vel. Phasellus lacinia placerat lacus, vulputate...'
-            },
-            {
-                id: 2,
-                image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600&h=400&fit=crop',
-                title: 'Qalereyalı yazı',
-                author: 'admin',
-                category: 'biznes',
-                excerpt: 'Maecenas eget congue augue. Sed mollis tempor velit, et tempor justo cursus vel. Phasellus lacinia placerat lacus, vulputate...'
-            },
-            {
-                id: 3,
-                image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop',
-                title: 'Söhbət formatında nümunə yazı',
-                author: 'admin',
-                category: 'interyer',
-                excerpt: 'Maecenas eget congue augue. Sed mollis tempor velit, et tempor justo cursus vel. Phasellus lacinia placerat lacus, vulputate...'
-            }
-        ]
-    }
-};
 
 const BlogSection: React.FC = () => {
     const currentLang = useSelector(selectCurrentLanguage);
-    const t = blogTranslations[currentLang];
-    const blogPosts = t.posts;
+    const t = translations[currentLang];
+
+    const blogPosts: BlogPost[] = [
+        {
+            id: 1,
+            image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=400&fit=crop',
+            title: t.blogPost1Title,
+            author: 'admin',
+            category: t.blogPost1Category,
+            excerpt: t.blogPost1Excerpt
+        },
+        {
+            id: 2,
+            image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600&h=400&fit=crop',
+            title: t.blogPost2Title,
+            author: 'admin',
+            category: t.blogPost2Category,
+            excerpt: t.blogPost2Excerpt
+        },
+        {
+            id: 3,
+            image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop',
+            title: t.blogPost3Title,
+            author: 'admin',
+            category: t.blogPost3Category,
+            excerpt: t.blogPost3Excerpt
+        }
+    ];
 
     return (
         <section className="py-20 bg-white">
             <div className="container mx-auto px-4 max-w-7xl">
                 <div className="text-center mb-16">
                     <h2 className="text-5xl font-serif mb-4 text-gray-900">
-                        {t.title}
+                        {t.blogTitle}
                     </h2>
                     <div className="mt-8 flex justify-center">
                         <img src="https://demo-22.woovinapro.com/wp-content/uploads/2019/10/heading-title-icon.png" alt="" />
                     </div>
                     <p className="text-gray-400 italic text-sm mb-8">
-                        {t.subtitle}
+                        {t.blogSubtitle}
                     </p>
                 </div>
 

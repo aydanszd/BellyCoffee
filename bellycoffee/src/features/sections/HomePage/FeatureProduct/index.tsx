@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, selectIsLoggedIn } from '../../../../Redux/Slices/cartSlice';
 import { selectCurrentLanguage } from '../../../../Redux/Slices/languageSlice';
+import { translations } from '../../../../translations/translations'; 
 
 interface Product {
     id: number;
@@ -16,45 +17,6 @@ interface Product {
     rating: number;
 }
 
-const featuredTranslations = {
-    en: {
-        title: "Featured Products",
-        subtitle: "Mirum est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum.",
-        outOfStock: "OUT OF STOCK",
-        readMore: "READ MORE",
-        addToCart: "ADD TO CART",
-        loginToBuy: "LOGIN TO BUY",
-        loading: "Loading featured products...",
-        pleaseLogin: "Please login to add items to cart",
-        loginToAddToCart: "Login to add to cart",
-        addedToCart: "added to cart!"
-    },
-    ru: {
-        title: "Избранные товары",
-        subtitle: "Mirum est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum.",
-        outOfStock: "НЕТ В НАЛИЧИИ",
-        readMore: "ПОДРОБНЕЕ",
-        addToCart: "В КОРЗИНУ",
-        loginToBuy: "ВОЙТИ ДЛЯ ПОКУПКИ",
-        loading: "Загрузка избранных товаров...",
-        pleaseLogin: "Пожалуйста, войдите, чтобы добавить товары в корзину",
-        loginToAddToCart: "Войдите, чтобы добавить в корзину",
-        addedToCart: "добавлен в корзину!"
-    },
-    az: {
-        title: "Seçilmiş məhsullar",
-        subtitle: "Mirum est notare quam littera gothica, quam nunc putamus parum claram anteposuerit litterarum.",
-        outOfStock: "STOKDA YOX",
-        readMore: "ƏTRAFLI OXU",
-        addToCart: "SƏBƏTƏ ƏLAVƏ ET",
-        loginToBuy: "ALMAQ ÜÇÜN GİRİŞ ET",
-        loading: "Seçilmiş məhsullar yüklənir...",
-        pleaseLogin: "Səbətə əlavə etmək üçün giriş edin",
-        loginToAddToCart: "Səbətə əlavə etmək üçün giriş",
-        addedToCart: "səbətə əlavə edildi!"
-    }
-};
-
 const FeaturedProducts: React.FC = () => {
     const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
@@ -64,7 +26,7 @@ const FeaturedProducts: React.FC = () => {
     const isLoggedIn = useSelector(selectIsLoggedIn);
     const currentLang = useSelector(selectCurrentLanguage);
     
-    const t = featuredTranslations[currentLang];
+    const t = translations[currentLang];
 
     const handleAddToCart = (product: Product, e: React.MouseEvent) => {
         e.stopPropagation();
@@ -150,10 +112,10 @@ const FeaturedProducts: React.FC = () => {
                         className="text-4xl font-light text-gray-900 mb-3"
                         style={{ fontFamily: 'Georgia, serif' }}
                     >
-                        {t.title}
+                        {t.featuredTitle}
                     </h2>
                     <p className="text-gray-400 text-sm italic max-w-2xl mx-auto mb-6">
-                        {t.subtitle}
+                        {t.featuredSubtitle}
                     </p>
                     <div className="flex items-center justify-center gap-3">
                         <div className="h-px w-24 bg-gray-300"></div>

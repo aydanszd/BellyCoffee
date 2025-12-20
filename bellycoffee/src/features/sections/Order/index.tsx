@@ -1,7 +1,8 @@
 import { useState, useEffect, type JSX } from 'react';
 import { Package, Eye, Truck, CheckCircle, Clock, XCircle, Search, X } from 'lucide-react';
+
 interface OrderItem {
-    id: number;
+    id: number | string;
     name: string;
     price: number;
     quantity: number;
@@ -17,6 +18,8 @@ interface CustomerInfo {
     city: string;
     state: string;
     zipCode: string;
+    country?: string;
+    notes?: string;
 }
 
 interface Order {
@@ -28,20 +31,12 @@ interface Order {
     customerInfo?: CustomerInfo;
 }
 
-interface StrapiImage {
-    url?: string;
-}
-
 interface StrapiOrder {
     name?: string;
 }
 
 interface StrapiProduct {
     id: number;
-    name: string;
-    price: string | number;
-    publishedAt: string;
-    image?: StrapiImage;
     order?: StrapiOrder;
 }
 
@@ -59,59 +54,84 @@ export default function OrdersPage() {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [statusFilter, setStatusFilter] = useState<StatusFilterType>('all');
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [showClearConfirm, setShowClearConfirm] = useState<boolean>(false);
 
     useEffect(() => {
         fetchOrders();
+        
+        // Check for success message from URL or navigation state
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'true') {
+            const orderId = urlParams.get('orderId');
+            if (orderId) {
+                setSuccessOrderId(orderId);
+                setShowSuccessMessage(true);
+                window.history.replaceState({}, '', '/orders');
+            }
+        }
+        
+        // Check navigation state
+        const state = window.history.state?.usr;
+        if (state?.message && state?.orderId) {
+            setSuccessOrderId(state.orderId);
+            setShowSuccessMessage(true);
+        }
     }, []);
 
     const fetchOrders = async (): Promise<void> => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:1337/api/products?populate=*');
-            const data: StrapiResponse = await response.json();
-            
-            const ordersByStatus: Record<string, Order> = {};
-            
-            data.data.forEach((product: StrapiProduct) => {
-                const orderStatus = (product.order?.name?.toLowerCase() || 'processing') as Order['status'];
+            let storedOrders: Order[] = JSON.parse(localStorage.getItem('orders') || '[]');
+            try {
+                const response = await fetch('http://localhost:1337/api/products?populate=*');
+                const data: StrapiResponse = await response.json();
                 
-                if (!ordersByStatus[orderStatus]) {
-                    const orderId = `ORD-${orderStatus.toUpperCase()}-STRAPI`;
-                    ordersByStatus[orderStatus] = {
-                        id: orderId,
-                        date: new Date(product.publishedAt).toLocaleDateString('en-US', { 
-                            year: 'numeric', 
-                            month: 'short', 
-                            day: 'numeric' 
-                        }),
-                        status: orderStatus,
-                        items: [],
-                        total: 0
+                const productStatusMap = new Map<number | string, Order['status']>();
+                data.data.forEach((product: StrapiProduct) => {
+                    const orderStatus = (product.order?.name?.toLowerCase() || 'processing') as Order['status'];
+                    productStatusMap.set(product.id, orderStatus);
+                });
+                
+                storedOrders = storedOrders.map(order => {
+                    const updatedItems = order.items.map(item => {
+                        if (productStatusMap.has(item.id)) {
+                            return { ...item };
+                        }
+                        return item;
+                    });
+                    const strapiStatus = order.items
+                        .map(item => productStatusMap.get(item.id))
+                        .find(status => status !== undefined);
+                    
+                    return {
+                        ...order,
+                        status: strapiStatus || order.status,
+                        items: updatedItems
                     };
-                }
-                
-                const item: OrderItem = {
-                    id: product.id,
-                    name: product.name,
-                    price: parseFloat(String(product.price)),
-                    quantity: 1,
-                    image: `http://localhost:1337${product.image?.url || ''}`
-                };
-                
-                ordersByStatus[orderStatus].items.push(item);
-                ordersByStatus[orderStatus].total += item.price;
-            });
+                });
+            } catch (strapiError) {
+                console.log('Strapi not available, using localStorage data only');
+            }
             
-            const strapiOrders = Object.values(ordersByStatus);
-            const localOrders: Order[] = JSON.parse(localStorage.getItem('orders') || '[]');
-            const filteredLocalOrders = localOrders.filter(order => !order.id.includes('STRAPI'));
-            const allOrders = [...filteredLocalOrders, ...strapiOrders];
+            const formattedOrders = storedOrders.map(order => ({
+                ...order,
+                date: order.date.includes('T') 
+                    ? new Date(order.date).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric' 
+                    })
+                    : order.date,
+                items: order.items.map(item => ({
+                    ...item,
+                    price: typeof item.price === 'string' ? parseFloat(item.price) : item.price
+                }))
+            }));
             
-            setOrders(allOrders);
+            setOrders(formattedOrders);
         } catch (error) {
             console.error('Error fetching orders:', error);
-            const savedOrders: Order[] = JSON.parse(localStorage.getItem('orders') || '[]');
-            setOrders(savedOrders);
+            setOrders([]);
         } finally {
             setLoading(false);
         }
@@ -177,6 +197,7 @@ export default function OrdersPage() {
         const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
         return matchesSearch && matchesStatus;
     });
+
     const groupedOrders = {
         processing: filteredOrders.filter(o => o.status === 'processing'),
         shipping: filteredOrders.filter(o => o.status === 'shipping'),
@@ -186,6 +207,13 @@ export default function OrdersPage() {
 
     const handleViewDetails = (order: Order): void => {
         setSelectedOrder(order);
+    };
+
+    const handleClearAllData = (): void => {
+        localStorage.removeItem('orders');
+        setOrders([]);
+        setShowClearConfirm(false);
+        setShowSuccessMessage(false);
     };
 
     const OrderCard = ({ order }: { order: Order }) => (
@@ -257,10 +285,20 @@ export default function OrdersPage() {
     return (
         <div className="min-h-screen bg-gray-50 pt-24 pb-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold text-gray-900 mb-2">My Orders</h1>
-                    <p className="text-gray-600">Track and manage your orders</p>
+                <div className="mb-8 flex justify-between items-center">
+                    <div>
+                        <h1 className="text-4xl font-bold text-gray-900 mb-2">My Orders</h1>
+                        <p className="text-gray-600">Track and manage your orders</p>
+                    </div>
+                    <button
+                        onClick={() => setShowClearConfirm(true)}
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center gap-2"
+                    >
+                        <XCircle className="w-4 h-4" />
+                        Clear Orders
+                    </button>
                 </div>
+
                 {showSuccessMessage && (
                     <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-lg shadow-md animate-fade-in">
                         <div className="flex items-center justify-between">
@@ -282,6 +320,7 @@ export default function OrdersPage() {
                         </div>
                     </div>
                 )}
+
                 <div className="bg-white rounded-lg shadow-md p-4 mb-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="relative">
@@ -307,6 +346,7 @@ export default function OrdersPage() {
                         </select>
                     </div>
                 </div>
+
                 {loading ? (
                     <div className="bg-white rounded-lg shadow-md p-12 text-center">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -318,7 +358,11 @@ export default function OrdersPage() {
                             <div className="bg-white rounded-lg shadow-md p-12 text-center">
                                 <Package className="w-16 h-16 mx-auto text-gray-300 mb-4" />
                                 <h3 className="text-xl font-semibold text-gray-700 mb-2">No orders found</h3>
-                                <p className="text-gray-500">Try adjusting your filters or search terms</p>
+                                <p className="text-gray-500">
+                                    {orders.length === 0 
+                                        ? "You haven't placed any orders yet" 
+                                        : "Try adjusting your filters or search terms"}
+                                </p>
                             </div>
                         ) : (
                             <div className="space-y-6">
@@ -333,6 +377,7 @@ export default function OrdersPage() {
                                     orders={groupedOrders.shipping} 
                                     title="Shipping Orders" 
                                 />
+
                                 <StatusSection 
                                     status="delivered" 
                                     orders={groupedOrders.delivered} 
@@ -381,6 +426,7 @@ export default function OrdersPage() {
                                         <p className="font-semibold text-gray-900">${selectedOrder.total.toFixed(2)}</p>
                                     </div>
                                 </div>
+
                                 {selectedOrder.customerInfo && (
                                     <div className="border-t pt-6 mb-6">
                                         <h3 className="font-semibold text-gray-900 mb-4">Shipping Information</h3>
@@ -397,12 +443,19 @@ export default function OrdersPage() {
                                                 <p className="text-gray-500">Phone</p>
                                                 <p className="font-medium">{selectedOrder.customerInfo.phone}</p>
                                             </div>
-                                            <div>
+                                            <div className="col-span-2">
                                                 <p className="text-gray-500">Address</p>
                                                 <p className="font-medium">
                                                     {selectedOrder.customerInfo.address}, {selectedOrder.customerInfo.city}, {selectedOrder.customerInfo.state} {selectedOrder.customerInfo.zipCode}
+                                                    {selectedOrder.customerInfo.country && `, ${selectedOrder.customerInfo.country}`}
                                                 </p>
                                             </div>
+                                            {selectedOrder.customerInfo.notes && (
+                                                <div className="col-span-2">
+                                                    <p className="text-gray-500">Order Notes</p>
+                                                    <p className="font-medium">{selectedOrder.customerInfo.notes}</p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 )}
@@ -435,7 +488,43 @@ export default function OrdersPage() {
                         </div>
                     </div>
                 )}
+                
+                {showClearConfirm && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                        <div className="bg-white rounded-lg max-w-md w-full p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                                    <XCircle className="w-6 h-6 text-red-600" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-gray-900">Clear All Orders?</h3>
+                                    <p className="text-sm text-gray-500">This action cannot be undone</p>
+                                </div>
+                            </div>
+                            
+                            <p className="text-gray-600 mb-6">
+                                This will permanently delete all your orders from this browser. Your cart and other data will remain unchanged.
+                            </p>
+                            
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setShowClearConfirm(false)}
+                                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleClearAllData}
+                                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                                >
+                                    Clear Orders
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
+
             <style>{`
                 @keyframes fade-in {
                     from {

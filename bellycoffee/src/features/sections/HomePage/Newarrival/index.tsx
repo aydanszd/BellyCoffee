@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, selectIsLoggedIn } from '../../../../Redux/Slices/cartSlice';
 import { selectCurrentLanguage } from '../../../../Redux/Slices/languageSlice';
+import { translations } from '../../../../translations/translations'; 
 
 interface Product {
     id: number;
@@ -17,48 +18,6 @@ interface Product {
     OutOfStock?: boolean;
 }
 
-const newArrivalsTranslations = {
-    en: {
-        title: "New Arrivals",
-        subtitle: "Mirum est notare quam littera gothica, quem nunc putamus parum claram anteposuerit litterarum.",
-        outOfStock: "OUT OF STOCK",
-        readMore: "READ MORE",
-        addToCart: "ADD TO CART",
-        loginToBuy: "LOGIN TO BUY",
-        loading: "Loading new arrivals...",
-        noProducts: "No new arrivals at the moment.",
-        pleaseLogin: "Please login to add items to cart",
-        loginToAddToCart: "Login to add to cart",
-        addedToCart: "added to cart!"
-    },
-    ru: {
-        title: "Новинки",
-        subtitle: "Mirum est notare quam littera gothica, quem nunc putamus parum claram anteposuerit litterarum.",
-        outOfStock: "НЕТ В НАЛИЧИИ",
-        readMore: "ПОДРОБНЕЕ",
-        addToCart: "В КОРЗИНУ",
-        loginToBuy: "ВОЙТИ ДЛЯ ПОКУПКИ",
-        loading: "Загрузка новинок...",
-        noProducts: "В данный момент новинок нет.",
-        pleaseLogin: "Пожалуйста, войдите, чтобы добавить товары в корзину",
-        loginToAddToCart: "Войдите, чтобы добавить в корзину",
-        addedToCart: "добавлен в корзину!"
-    },
-    az: {
-        title: "Yeni Gələnlər",
-        subtitle: "Mirum est notare quam littera gothica, quem nunc putamus parum claram anteposuerit litterarum.",
-        outOfStock: "STOKDA YOX",
-        readMore: "ƏTRAFLI OXU",
-        addToCart: "SƏBƏTƏ ƏLAVƏ ET",
-        loginToBuy: "ALMAQ ÜÇÜN GİRİŞ ET",
-        loading: "Yeni məhsullar yüklənir...",
-        noProducts: "Hazırda yeni məhsul yoxdur.",
-        pleaseLogin: "Səbətə əlavə etmək üçün giriş edin",
-        loginToAddToCart: "Səbətə əlavə etmək üçün giriş",
-        addedToCart: "səbətə əlavə edildi!"
-    }
-};
-
 const NewArrivals: React.FC = () => {
     const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
@@ -68,7 +27,7 @@ const NewArrivals: React.FC = () => {
     const isLoggedIn = useSelector(selectIsLoggedIn);
     const currentLang = useSelector(selectCurrentLanguage);
     
-    const t = newArrivalsTranslations[currentLang];
+    const t = translations[currentLang];
 
     useEffect(() => {
         const fetchNewArrivals = async () => {
@@ -142,7 +101,7 @@ const NewArrivals: React.FC = () => {
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <p className="text-gray-500">{t.loading}</p>
+                <p className="text-gray-500">{t.loadingNewArrivals}</p>
             </div>
         );
     }
@@ -151,10 +110,10 @@ const NewArrivals: React.FC = () => {
         <div className="min-h-screen bg-gray-50">
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
                 <h1 className="text-4xl font-light text-gray-900 mb-3" style={{ fontFamily: 'Georgia, serif' }}>
-                    {t.title}
+                    {t.newArrivalsTitle}
                 </h1>
                 <p className="text-gray-400 text-sm italic max-w-2xl mx-auto mb-6">
-                    {t.subtitle}
+                    {t.newArrivalsSubtitle}
                 </p>
                 <div className="flex items-center justify-center gap-3">
                     <div className="h-px w-24 bg-gray-300"></div>
@@ -168,7 +127,7 @@ const NewArrivals: React.FC = () => {
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
                 {products.length === 0 ? (
                     <div className="text-center py-12">
-                        <p className="text-gray-500">{t.noProducts}</p>
+                        <p className="text-gray-500">{t.noNewProducts}</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

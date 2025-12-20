@@ -2,65 +2,7 @@ import { useState } from 'react';
 import { Home, Phone, Mail } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { selectCurrentLanguage } from '../../../../Redux/Slices/languageSlice';
-const contactFormTranslations = {
-    en: {
-        title: "Contact Us",
-        address: "Address",
-        addressText: "123 Main Street, Anytown, CA 12345 – USA",
-        phone: "Phone",
-        mobile: "Mobile: (08) 123 456 789",
-        hotline: "Hotline: 1009 678 456",
-        email: "Email",
-        formTitle: "Tell Us Your Message",
-        yourName: "Your Name",
-        yourEmail: "Your Email",
-        subject: "Subject",
-        yourMessage: "Your Message",
-        send: "SEND",
-        required: "*",
-        successMessage: "Message sent successfully!",
-        emailPlaceholder1: "yourmail@domain.com",
-        emailPlaceholder2: "support@domain.com"
-    },
-    ru: {
-        title: "Связаться с нами",
-        address: "Адрес",
-        addressText: "123 Main Street, Anytown, CA 12345 – USA",
-        phone: "Телефон",
-        mobile: "Мобильный: (08) 123 456 789",
-        hotline: "Горячая линия: 1009 678 456",
-        email: "Эл. почта",
-        formTitle: "Напишите нам сообщение",
-        yourName: "Ваше имя",
-        yourEmail: "Ваш email",
-        subject: "Тема",
-        yourMessage: "Ваше сообщение",
-        send: "ОТПРАВИТЬ",
-        required: "*",
-        successMessage: "Сообщение успешно отправлено!",
-        emailPlaceholder1: "yourmail@domain.com",
-        emailPlaceholder2: "support@domain.com"
-    },
-    az: {
-        title: "Bizimlə əlaqə",
-        address: "Ünvan",
-        addressText: "123 Main Street, Anytown, CA 12345 – USA",
-        phone: "Telefon",
-        mobile: "Mobil: (08) 123 456 789",
-        hotline: "Qaynar xətt: 1009 678 456",
-        email: "Email",
-        formTitle: "Bizə mesajınızı yazın",
-        yourName: "Adınız",
-        yourEmail: "Email ünvanınız",
-        subject: "Mövzu",
-        yourMessage: "Mesajınız",
-        send: "GÖNDƏR",
-        required: "*",
-        successMessage: "Mesaj uğurla göndərildi!",
-        emailPlaceholder1: "yourmail@domain.com",
-        emailPlaceholder2: "support@domain.com"
-    }
-};
+import { translations } from '../../../../translations/translations'; 
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
@@ -71,7 +13,7 @@ export default function ContactPage() {
     });
 
     const currentLang = useSelector(selectCurrentLanguage);
-    const t = contactFormTranslations[currentLang];
+    const t = translations[currentLang];
 
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         setFormData({
@@ -92,7 +34,7 @@ export default function ContactPage() {
             <div className="max-w-7xl mx-auto py-16 px-4">
                 <div className="grid grid-cols-1 md:grid-cols-7 gap-16">
                     <div className="md:col-span-2">
-                        <h1 className="text-5xl font-[Rubik] text-gray-800 mb-16">{t.title}</h1>
+                        <h1 className="text-5xl font-[Rubik] text-gray-800 mb-16">{t.contactTitle}</h1>
                         <div className="mb-10 pb-8 border-b border-gray-200 -mt-5">
                             <div className="flex items-start gap-6">
                                 <div className="bg-gray-100 p-4 rounded">

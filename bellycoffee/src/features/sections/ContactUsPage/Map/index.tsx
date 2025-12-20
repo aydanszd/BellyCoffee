@@ -1,31 +1,17 @@
 import { useSelector } from 'react-redux';
 import { selectCurrentLanguage } from '../../../../Redux/Slices/languageSlice';
-
-const contactTranslations = {
-    en: {
-        title: "Contact Us",
-        home: "Home"
-    },
-    ru: {
-        title: "Связаться с нами",
-        home: "Главная"
-    },
-    az: {
-        title: "Bizimlə əlaqə",
-        home: "Ana səhifə"
-    }
-};
+import { translations } from '../../../../translations/translations'; 
 
 export default function ContactPage() {
     const currentLang = useSelector(selectCurrentLanguage);
-    const t = contactTranslations[currentLang];
+    const t = translations[currentLang];
 
     return (
         <div className="min-h-screen">
             <div className="py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-5xl text-gray-900 mb-4 mt-17.5 font-[Rubik]">{t.title}</h1>
-                    <p className="text-gray-600 text-[16px]">{t.home} / <span className='text-[#B3936D]'>{t.title}</span></p>
+                    <h1 className="text-5xl text-gray-900 mb-4 mt-17.5 font-[Rubik]">{t.contactTitle}</h1>
+                    <p className="text-gray-600 text-[16px]">{t.homeLink} / <span className='text-[#B3936D]'>{t.contactTitle}</span></p>
                 </div>
             </div>
 
