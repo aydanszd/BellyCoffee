@@ -4,15 +4,6 @@ import { Pagination } from 'antd';
 import { useSelector } from 'react-redux';
 import { selectCurrentLanguage } from '../../../Redux/Slices/languageSlice';
 
-interface BlogPost {
-    id: number;
-    category: string;
-    title: string;
-    excerpt: string;
-    image: string;
-    comments: number;
-    date: string;
-}
 const blogLayoutTranslations = {
     en: {
         title: "Blog",

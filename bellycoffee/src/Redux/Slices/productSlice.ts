@@ -75,7 +75,6 @@ export const fetchProducts = createAsyncThunk<FetchProductsResponse>(
             if (item.image?.url) {
                 imageUrl = `${API_URL}${item.image.url}`;
             }
-
             return {
                 id: item.id,
                 documentId: item.documentId,

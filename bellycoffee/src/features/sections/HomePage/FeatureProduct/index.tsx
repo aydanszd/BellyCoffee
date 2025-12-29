@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Eye } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, selectIsLoggedIn } from '../../../../Redux/Slices/cartSlice';
 import { selectCurrentLanguage } from '../../../../Redux/Slices/languageSlice';
@@ -63,7 +63,7 @@ const FeaturedProducts: React.FC = () => {
                         oldprice: item.oldprice ? parseFloat(item.oldprice) : null,
                         image: item.image?.url ? `http://localhost:1337${item.image.url}` : '',
                         OutOfStock: item.OutOfStock === true,
-                        rating: 0
+                        rating: item.rating || 0
                     }));
                 
                 setProducts(featuredProducts);
@@ -77,13 +77,13 @@ const FeaturedProducts: React.FC = () => {
         fetchFeaturedProducts();
     }, []);
 
-    const renderStars = (product: Product) => {
+    const renderStars = (rating: number) => {
         return (
             <div className="flex justify-center gap-1 mb-3">
                 {[1, 2, 3, 4, 5].map((star) => (
                     <svg
                         key={star}
-                        className="w-3 h-3 text-gray-300"
+                        className={`w-3 h-3 ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
                         fill="currentColor"
                         viewBox="0 0 20 20"
                     >
@@ -160,6 +160,7 @@ const FeaturedProducts: React.FC = () => {
                                     <button 
                                         className="w-10 h-10 bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-colors duration-200 shadow-sm"
                                         onClick={(e) => e.stopPropagation()}
+                                        aria-label="View product"
                                     >
                                         <Eye className="w-4 h-4" />
                                     </button>
@@ -169,6 +170,7 @@ const FeaturedProducts: React.FC = () => {
                                             className="w-10 h-10 bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-colors duration-200 shadow-sm"
                                             onClick={(e) => handleAddToCart(product, e)}
                                             title={!isLoggedIn ? t.loginToAddToCart : t.addToCart}
+                                            aria-label="Add to cart"
                                         >
                                             <ShoppingCart className="w-4 h-4" />
                                         </button>
@@ -180,7 +182,7 @@ const FeaturedProducts: React.FC = () => {
                                 <h3 className="text-sm font-normal text-gray-700 mb-2">
                                     {product.name}
                                 </h3>
-                                {renderStars(product)}
+                                {renderStars(product.rating)}
 
                                 <div className="flex items-center justify-center gap-2 mb-4">
                                     {product.oldprice && (

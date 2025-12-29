@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Eye } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, selectIsLoggedIn } from '../../../../Redux/Slices/cartSlice';
 import { selectCurrentLanguage } from '../../../../Redux/Slices/languageSlice';
@@ -48,7 +48,7 @@ const NewArrivals: React.FC = () => {
                         oldprice: item.oldprice ? parseFloat(item.oldprice) : null,
                         image: item.image?.url ? `http://localhost:1337${item.image.url}` : '',
                         OutOfStock: item.OutOfStock === true,
-                        rating: 0
+                        rating: item.rating || 0
                     }));
                 
                 setProducts(newArrivals);
@@ -87,7 +87,7 @@ const NewArrivals: React.FC = () => {
                 {[1, 2, 3, 4, 5].map((star) => (
                     <svg
                         key={star}
-                        className="w-3 h-3 text-gray-300"
+                        className={`w-3 h-3 ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
                         fill="currentColor"
                         viewBox="0 0 20 20"
                     >
@@ -164,6 +164,7 @@ const NewArrivals: React.FC = () => {
                                         <button 
                                             className="w-10 h-10 bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-colors duration-200 shadow-sm"
                                             onClick={(e) => e.stopPropagation()}
+                                            aria-label="View product"
                                         >
                                             <Eye className="w-4 h-4" />
                                         </button>
@@ -173,6 +174,7 @@ const NewArrivals: React.FC = () => {
                                                 className="w-10 h-10 bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-colors duration-200 shadow-sm"
                                                 onClick={(e) => handleAddToCart(product, e)}
                                                 title={!isLoggedIn ? t.loginToAddToCart : t.addToCart}
+                                                aria-label="Add to cart"
                                             >
                                                 <ShoppingCart className="w-4 h-4" />
                                             </button>
@@ -219,6 +221,7 @@ const NewArrivals: React.FC = () => {
             <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="fixed bottom-8 right-8 bg-gray-900 text-white p-4 rounded-full shadow-lg hover:bg-gray-700 transition-colors duration-300"
+                aria-label="Scroll to top"
             >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />

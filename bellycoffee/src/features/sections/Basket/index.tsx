@@ -1,14 +1,16 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { removeFromCart, updateQuantity, clearCart } from '../../../Redux/Slices/cartSlice';
+
 interface CartItem {
-    id: string | number;
+    id: string;
     name: string;
-    price: string;
-    quantity: number;
+    price: number;
     image: string;
+    quantity: number;
 }
+
 interface RootState {
     cart: {
         items: CartItem[];
@@ -19,21 +21,19 @@ export default function CartPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const cartItems = useSelector((state: RootState) => state.cart.items);
-    
-    console.log('Cart Items:', cartItems); 
 
     const calculateSubtotal = (): number => {
         return cartItems.reduce((total: number, item: CartItem) => {
-            return total + (parseFloat(item.price) * item.quantity);
+            return total + (item.price * item.quantity);
         }, 0);
     };
 
-    const handleQuantityChange = (id: string | number, newQuantity: number): void => {
+    const handleQuantityChange = (id: string, newQuantity: number): void => {
         if (newQuantity < 1) return;
         dispatch(updateQuantity({ id, quantity: newQuantity }));
     };
 
-    const handleRemoveItem = (id: string | number): void => {
+    const handleRemoveItem = (id: string): void => {
         dispatch(removeFromCart(id));
     };
 
@@ -99,7 +99,7 @@ export default function CartPage() {
                                                             alt={item.name}
                                                             className="w-20 h-20 object-cover rounded-lg"
                                                             onError={(e) => {
-                                                                const target = e.target as HTMLImageElement;
+                                                                const target = e.currentTarget;
                                                                 target.src = 'https://via.placeholder.com/80x80?text=No+Image';
                                                             }}
                                                         />
@@ -110,7 +110,7 @@ export default function CartPage() {
                                                 </td>
                                                 <td className="py-4 px-6 text-center">
                                                     <span className="text-[#B3936D] font-semibold">
-                                                        ${parseFloat(item.price).toFixed(2)}
+                                                        ${item.price.toFixed(2)}
                                                     </span>
                                                 </td>
                                                 <td className="py-4 px-6">
@@ -118,6 +118,7 @@ export default function CartPage() {
                                                         <button
                                                             onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
                                                             className="w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center transition-colors"
+                                                            aria-label="Decrease quantity"
                                                         >
                                                             <Minus className="w-4 h-4" />
                                                         </button>
@@ -125,6 +126,7 @@ export default function CartPage() {
                                                         <button
                                                             onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                                                             className="w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center transition-colors"
+                                                            aria-label="Increase quantity"
                                                         >
                                                             <Plus className="w-4 h-4" />
                                                         </button>
@@ -132,13 +134,14 @@ export default function CartPage() {
                                                 </td>
                                                 <td className="py-4 px-6 text-center">
                                                     <span className="text-gray-900 font-bold">
-                                                        ${(parseFloat(item.price) * item.quantity).toFixed(2)}
+                                                        ${(item.price * item.quantity).toFixed(2)}
                                                     </span>
                                                 </td>
                                                 <td className="py-4 px-6 text-center">
                                                     <button
                                                         onClick={() => handleRemoveItem(item.id)}
                                                         className="text-red-500 hover:text-red-700 transition-colors p-2"
+                                                        aria-label="Remove item"
                                                     >
                                                         <Trash2 className="w-5 h-5" />
                                                     </button>
@@ -158,20 +161,21 @@ export default function CartPage() {
                                                 alt={item.name}
                                                 className="w-24 h-24 object-cover rounded-lg"
                                                 onError={(e) => {
-                                                    const target = e.target as HTMLImageElement;
+                                                    const target = e.currentTarget;
                                                     target.src = 'https://via.placeholder.com/96x96?text=No+Image';
                                                 }}
                                             />
                                             <div className="flex-1">
                                                 <h3 className="font-medium text-gray-900 mb-2">{item.name}</h3>
                                                 <p className="text-[#B3936D] font-semibold mb-3">
-                                                    ${parseFloat(item.price).toFixed(2)}
+                                                    ${item.price.toFixed(2)}
                                                 </p>
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-2">
                                                         <button
                                                             onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
                                                             className="w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+                                                            aria-label="Decrease quantity"
                                                         >
                                                             <Minus className="w-4 h-4" />
                                                         </button>
@@ -179,6 +183,7 @@ export default function CartPage() {
                                                         <button
                                                             onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                                                             className="w-8 h-8 rounded-full border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+                                                            aria-label="Increase quantity"
                                                         >
                                                             <Plus className="w-4 h-4" />
                                                         </button>
@@ -186,13 +191,14 @@ export default function CartPage() {
                                                     <button
                                                         onClick={() => handleRemoveItem(item.id)}
                                                         className="text-red-500 hover:text-red-700 p-2"
+                                                        aria-label="Remove item"
                                                     >
                                                         <Trash2 className="w-5 h-5" />
                                                     </button>
                                                 </div>
                                                 <div className="mt-2 text-right">
                                                     <span className="text-gray-900 font-bold">
-                                                        Total: ${(parseFloat(item.price) * item.quantity).toFixed(2)}
+                                                        Total: ${(item.price * item.quantity).toFixed(2)}
                                                     </span>
                                                 </div>
                                             </div>

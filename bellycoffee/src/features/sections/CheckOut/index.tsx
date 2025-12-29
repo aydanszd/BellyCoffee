@@ -113,7 +113,7 @@ export default function CheckoutPage() {
                     state: formData.state,
                     zipCode: formData.zipCode,
                     country: formData.country,
-                    notes: formData.orderNotes
+                    orderNotes: formData.orderNotes
                 }
             };
 

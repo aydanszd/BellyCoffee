@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Menu, X, LogOut, Globe } from 'lucide-react';
 import { selectCartItemsCount, setLoginStatus } from '../../Redux/Slices/cartSlice';
 import { selectCurrentLanguage, setLanguage, type Language } from '../../Redux/Slices/languageSlice';
@@ -14,6 +14,7 @@ interface Product {
         url: string;
     };
 }
+
 const translations = {
     en: {
         home: 'HOME',
@@ -64,8 +65,6 @@ const translations = {
         moreDemos: 'DAHA ÇOX DEMO'
     }
 };
-
-type Language = 'en' | 'ru' | 'az';
 
 export default function BellyNavbar() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -210,6 +209,7 @@ export default function BellyNavbar() {
                         <button 
                             onClick={() => setIsSearchOpen(!isSearchOpen)}
                             className="text-black hover:text-gray-500 transition-colors"
+                            aria-label="Search"
                         >
                             <Search className="w-5 h-5" />
                         </button>
@@ -217,6 +217,7 @@ export default function BellyNavbar() {
                         <button
                             onClick={() => navigate('/cart')}
                             className="text-black hover:text-gray-500 transition-colors relative"
+                            aria-label="Shopping cart"
                         >
                             <ShoppingCart className="w-5 h-5" />
                             {cartItemsCount > 0 && (
@@ -228,12 +229,13 @@ export default function BellyNavbar() {
                         <button 
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             className="text-black hover:text-[#B3936D] transition-colors md:hidden"
+                            aria-label="Menu"
                         >
                             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                         </button>
 
                         <div className="relative hidden md:block group">
-                            <button className="text-black p-2 hover:bg-gray-100 rounded transition-colors">
+                            <button className="text-black p-2 hover:bg-gray-100 rounded transition-colors" aria-label="More options">
                                 <div className="grid grid-cols-3 gap-1">
                                     {[...Array(9)].map((_, i) => (
                                         <div key={i} className="w-1 h-1 bg-gray-600 rounded-sm group-hover:bg-[#B3936D] transition-colors"></div>
@@ -244,7 +246,7 @@ export default function BellyNavbar() {
                                 {isLoggedIn ? (
                                     <button 
                                         onClick={handleLogout} 
-                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 items-center gap-2"
+                                        className="flex w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 items-center gap-2"
                                     >
                                         <LogOut className="w-4 h-4" />
                                         {t.logout}
@@ -341,7 +343,7 @@ export default function BellyNavbar() {
                                         handleLogout();
                                         setIsMobileMenuOpen(false);
                                     }}
-                                    className="block w-full text-left text-gray-600 hover:text-[#B3936D] py-1 items-center gap-2"
+                                    className="flex w-full text-left text-gray-600 hover:text-[#B3936D] py-1 items-center gap-2"
                                 >
                                     <LogOut className="w-4 h-4" />
                                     {t.logout}
@@ -390,7 +392,7 @@ export default function BellyNavbar() {
             )}
             
             {isSearchOpen && (
-                <div className="fixed inset-0 bg-opacity-30 z-50 flex items-start justify-center pt-20">
+                <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex items-start justify-center pt-20">
                     <div className="bg-white w-full max-w-3xl mx-4 rounded-lg shadow-2xl">
                         <div className="p-6">
                             <div className="flex items-center gap-4 mb-4">
@@ -412,12 +414,12 @@ export default function BellyNavbar() {
                                         setSearchResults([]);
                                     }}
                                     className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                                    aria-label="Close search"
                                 >
                                     <X className="w-6 h-6" />
                                 </button>
                             </div>
 
-                            {/* Search Results */}
                             <div className="max-h-96 overflow-y-auto">
                                 {isSearching ? (
                                     <div className="text-center py-8 text-gray-500">
@@ -454,10 +456,11 @@ export default function BellyNavbar() {
                 </div>
             )}
 
-            <div className="fixed right-0 top-1/2 -translate-y-50 z-50">
+            <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
                 <button
                     onClick={() => window.open('#', '_blank')}
                     className="bg-[#f68e13] text-center text-white w-16 h-16 shadow-lg hover:bg-orange-600 transition-colors flex items-center justify-center text-sm font-bold"
+                    aria-label="More demos"
                 >
                     {t.moreDemos.split(' ')[0]} <br /> {t.moreDemos.split(' ')[1]}
                 </button>
